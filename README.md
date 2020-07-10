@@ -17,3 +17,5 @@ Options:
 
 If you run it with `./monitor.sh --log-file ./access.txt --alert-threshold 10 --alert-window 2` 
 it will raise an alert if it registeres more than 10 requests/second on average for a time frame of 2 minutes.
+
+![ezgif-6-5d6bcbe44a3f](https://user-images.githubusercontent.com/1624385/87150051-a31fed80-c2b1-11ea-8039-d0d4596dffc2.gif)
