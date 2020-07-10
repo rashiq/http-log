@@ -1,9 +1,6 @@
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
-suspend fun ticker(seconds: Long = 1, invoke: () -> Unit) = GlobalScope.launch(Dispatchers.Default) {
+suspend fun ticker(seconds: Long = 1, invoke: () -> Unit) {
   do {
     invoke()
     delay(seconds * 1000)

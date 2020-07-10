@@ -22,10 +22,12 @@ class AlertsMonitor(
   private var alerted = false
 
   override fun monitor() = GlobalScope.launch(Dispatchers.Default) {
-    ticker {
-      synchronized(buffer) {
-        recalculateBuffer()
-        checkAlerting()
+    launch {
+      ticker {
+        synchronized(buffer) {
+          recalculateBuffer()
+          checkAlerting()
+        }
       }
     }
 

@@ -18,8 +18,10 @@ class StatisticsMonitor(
   private val statistics = Statistics()
 
   override fun monitor() = GlobalScope.launch(Dispatchers.Default) {
-    ticker(10) {
-      publishLogs()
+    launch {
+      ticker(10) {
+        publishLogs()
+      }
     }
 
     for (event in bus.subscribe<LogEvent>()) {
