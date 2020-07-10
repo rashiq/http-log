@@ -16,4 +16,4 @@ Options:
 ```
 
 If you run it with `./monitor.sh --log-file ./access.txt --alert-threshold 10 --alert-window 2` 
-it will raise an alert if it registeres more than 10 requests/second on average in for a time frame of 2 minutes.
+it will raise an alert if it registeres more than 10 requests/second on average for a time frame of 2 minutes.
