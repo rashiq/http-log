@@ -22,7 +22,7 @@ class Application : CliktCommand() {
 
   override fun run() {
     val file = File(logFile)
-    if (!file.exists()) {
+    if (!file.exists() || !file.isFile) {
       println("Log file $logFile doesn't exist")
       return
     }
