@@ -36,6 +36,7 @@ class Terminal(private val bus: EventBus) {
   }
 
   private fun renderAlerts(event: RenderAlertEvent) {
+    clearScreen()
     val message = when (event) {
       is RenderAlertTriggeredEvent -> {
         val hitsPerSecond = event.hitsPerSecond
@@ -57,6 +58,7 @@ class Terminal(private val bus: EventBus) {
   }
 
   private fun renderStatistics(event: RenderUiEvent) {
+    clearScreen()
     with(event) {
       listOf(
         "================ ${LocalDateTime.now().format(dateTimeFormat)} ================",
@@ -82,5 +84,9 @@ class Terminal(private val bus: EventBus) {
       ).forEach(::println)
     }
     repeat(2) { println() }
+  }
+
+  private fun clearScreen() {
+    print("\u001B[H\u001B[2J");
   }
 }
