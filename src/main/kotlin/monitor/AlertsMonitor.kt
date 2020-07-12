@@ -22,6 +22,9 @@ class AlertsMonitor(
   private var alerted = false
 
   override fun monitor() = GlobalScope.launch(Dispatchers.Default) {
+
+    // launch a ticker inside coroutine that checks the buffer
+    // for the current traffic every second
     launch {
       ticker {
         synchronized(buffer) {
@@ -31,6 +34,7 @@ class AlertsMonitor(
       }
     }
 
+    // Add a timestamp for every log entry we receive
     for (event in bus.subscribe<LogEvent>()) {
       synchronized(buffer) {
         buffer.add(LocalDateTime.now())
@@ -38,6 +42,10 @@ class AlertsMonitor(
     }
   }
 
+  /**
+   * Remove all elements inside [buffer] that are older
+   * than the specified [Configuration.alertingWindow].
+   */
   private fun recalculateBuffer() {
     val now = LocalDateTime.now()
     var tail = buffer.lastOrNull()
@@ -47,6 +55,13 @@ class AlertsMonitor(
     }
   }
 
+  /**
+   * Check whether we need to dispatch a [RenderAlertTriggeredEvent]
+   * in case we register more events than specified by the alerting
+   * threshold [Configuration.alertingThreshold], or whether we need to
+   * dispatch a [RenderAlertRecoveredEvent] in case we've recovered from
+   * an alert.
+   */
   private fun checkAlerting() {
     val hitsThreshold = configuration.alertingThreshold * 60 * configuration.alertingWindow
     val hitsPerSecond = buffer.size / 60 / configuration.alertingWindow

@@ -19,6 +19,7 @@ class StatisticsMonitor(
 
   override fun monitor() = GlobalScope.launch(Dispatchers.Default) {
     launch {
+      // refresh the screen every 10 seconds
       ticker(10) {
         publishLogs()
       }
