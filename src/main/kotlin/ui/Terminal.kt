@@ -18,6 +18,15 @@ class Terminal(private val bus: EventBus) {
   private val dateTimeFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
   private val renderLock = ReentrantLock()
 
+  /**
+   * Renders UI and Alert events in their own respective coroutine.
+   * In oder to coordinate write to the console we're using a [ReentrantLock],
+   * to make sure we're not rendering multiple events at the same time,
+   * potentially making the output unreadable.
+   *
+   * We need to do that because the UI events and the Alert events operate
+   * independently of each other.
+   */
   suspend fun render() = withContext(Dispatchers.Default) {
     launch {
       for (event in bus.subscribe<RenderUiEvent>()) {
@@ -86,6 +95,10 @@ class Terminal(private val bus: EventBus) {
     repeat(2) { println() }
   }
 
+  /**
+   * Doesn't fully clear the screen but resets the cursor,
+   * so you can still scroll through past events.
+   */
   private fun clearScreen() {
     print("\u001B[H\u001B[2J");
   }
